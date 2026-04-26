@@ -16,10 +16,11 @@ jobs:
 
       - name: Sync with upstream
         run: |
+          BRANCH="${GITHUB_REF_NAME}"
           git remote add upstream "$(gh repo view --json parent --jq '.parent.url')"
           git fetch upstream
-          git checkout main
-          git merge upstream/main --no-edit
-          git push origin main
+          git checkout "$BRANCH"
+          git merge "upstream/$BRANCH" --no-edit
+          git push origin "$BRANCH"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
